@@ -174,9 +174,11 @@ public final class QueryUtils {
         // Catch the exception so the app doesn't crash, and print the error message to the logs.
         try {
 
-            // Convert the string of Json received from the Gardian API to a JSONObject
-            // and JSONArray
-            JSONObject JSONResponseObject = new JSONObject(jsonResponse);
+            // Convert the string of Json received from the Gardian API to 2 main JSONObjects
+            // and a JSONArray.
+            // This extraction is based on the structure of the JSON response from the Gardian API.
+            JSONObject JSONGeneralObject = new JSONObject(jsonResponse);
+            JSONObject JSONResponseObject = JSONGeneralObject.optJSONObject("response");
             JSONArray JSONArticleArray = JSONResponseObject.optJSONArray("results");
 
             // Loop through the JSONArticleArray to extract informations about each Article
@@ -187,14 +189,13 @@ public final class QueryUtils {
                 JSONObject JSONArticleObject = JSONArticleArray.optJSONObject(i);
                 JSONObject JSONArticleFieldObject = JSONArticleObject.optJSONObject("fields");
 
-                // Test the API response, period
-                // TesT THE RESPONSE WITH A SAMPLE Json, period !
+                // Add a new article on the article list
                 articles.add(new Article(JSONArticleObject.optString("webTitle"),
                         JSONArticleFieldObject.optString("trailText"),
                         JSONArticleFieldObject.optString("thumbnail"),
                         JSONArticleObject.optString("webUrl"),
                         JSONArticleObject.optString("webPublicationDate"))) ;
-            // Next : Test the API response
+
             }
 
         } catch (JSONException e) {
@@ -207,6 +208,8 @@ public final class QueryUtils {
         return articles;
     }
 
+    // How to fill out the activity Layout ? Idk !
+    // Filling the activity layout with an adapter + a recycler view, 
     /**
      * This function will extract the authors from the JsonArray and return a List of String
      * that contains all the authors
@@ -227,6 +230,37 @@ public final class QueryUtils {
      * Returns a String that represent a Json Response from the Gardian API
      */
 
-    public static String theSampleJson() {return "";}
+    public static String theSampleJson() {return "{\n" +
+            "  \"response\": {\n" +
+            "    \"status\": \"ok\",\n" +
+            "    \"userTier\": \"developer\",\n" +
+            "    \"total\": 51794,\n" +
+            "    \"startIndex\": 1,\n" +
+            "    \"pageSize\": 10,\n" +
+            "    \"currentPage\": 1,\n" +
+            "    \"pages\": 5180,\n" +
+            "    \"orderBy\": \"relevance\",\n" +
+            "    \"results\": [\n" +
+            "      {\n" +
+            "        \"id\": \"world/2020/mar/04/donald-trump-obama-administration-coronavirus\",\n" +
+            "        \"type\": \"article\",\n" +
+            "        \"sectionId\": \"world\",\n" +
+            "        \"sectionName\": \"World news\",\n" +
+            "        \"webPublicationDate\": \"2020-03-05T03:05:24Z\",\n" +
+            "        \"webTitle\": \"Trump attempts to blame Obama for coronavirus test kit shortage\",\n" +
+            "        \"webUrl\": \"https://www.theguardian.com/world/2020/mar/04/donald-trump-obama-administration-coronavirus\",\n" +
+            "        \"apiUrl\": \"https://content.guardianapis.com/world/2020/mar/04/donald-trump-obama-administration-coronavirus\",\n" +
+            "        \"fields\": {\n" +
+            "          \"trailText\": \"President vaguely attacks Obama administration ‘decision’ amid slow rollout of testing for virus\",\n" +
+            "          \"thumbnail\": \"https://media.guim.co.uk/d7ef357695bb60ea71e6291bc14b407dd6ab2c8b/0_0_3044_1826/500.jpg\"\n" +
+            "        },\n" +
+            "        \"isHosted\": false,\n" +
+            "        \"pillarId\": \"pillar/news\",\n" +
+            "        \"pillarName\": \"News\"\n" +
+            "      \n" +
+            "     }]  \n" +
+            "\n" +
+            "  } \n" +
+            "}";}
 
 }
