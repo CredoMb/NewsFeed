@@ -194,7 +194,7 @@ public final class QueryUtils {
                         JSONArticleFieldObject.optString("thumbnail"),
                         JSONArticleObject.optString("webUrl"),
                         JSONArticleObject.optString("webPublicationDate"))) ;
-
+            // Next : Test the API response
             }
 
         } catch (JSONException e) {
