@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
         android:id="@+id/article_main_info_Vg"
@@ -16,7 +17,7 @@
             android:textSize="16sp"/>
 
         <TextView
-            android:id="@+id/article_summary_tv"
+            android:id="@+id/article_trailText_tv"
             android:layout_below="@id/article_title_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -25,7 +26,7 @@
 
         <TextView
             android:id="@+id/article_published_time_tv"
-            android:layout_below="@id/article_summary_tv"
+            android:layout_below="@id/article_trailText_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="6 min ago"/>
@@ -44,10 +45,12 @@
             android:layout_width="40dp"
             android:layout_height="40dp" />
 
-        <View
+        <ImageButton
             android:id="@+id/sharing_icon"
+            android:src="@drawable/ic_launcher_background"
             android:layout_width="48dp"
-            android:layout_height="48dp"/>
+            android:layout_height="48dp"
+            android:background="@android:color/transparent"/>
 
     </LinearLayout>
 
