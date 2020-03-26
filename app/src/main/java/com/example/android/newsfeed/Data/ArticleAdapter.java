@@ -188,7 +188,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleA
      *
      * @param articleData The new movie data to be displayed.
      */
-    public void setArticleData (ArrayList<Article> articleData) {
+    public void setArticleData (List<Article> articleData) {
         mArticleData = articleData;
 
         // This method will notify the recycler view

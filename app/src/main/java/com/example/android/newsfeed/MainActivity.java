@@ -14,10 +14,8 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 
 import com.example.android.newsfeed.Data.ArticleAdapter;
 import com.example.android.newsfeed.Data.ArticleLoader;
@@ -40,7 +38,7 @@ public class MainActivity extends AppCompatActivity
     /* The recycler view will contain
     *  a list of articles. Each article
     *  is built using the "news_list_item.xml" layout */
-    private RecyclerView mArticlesList;
+    private RecyclerView mArticlesRv;
 
     /*Will be used to populate data to the
     * RecyclerView
@@ -65,7 +63,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         // Inflate the RecyclerView
-        mArticlesList = (RecyclerView) findViewById(R.id.rv_articles);
+        mArticlesRv = (RecyclerView) findViewById(R.id.rv_articles);
 
         ArrayList<Article> data =
         QueryUtils.extractArticles(QueryUtils.theSampleJson());
@@ -73,21 +71,25 @@ public class MainActivity extends AppCompatActivity
         // Create a LinearLayoutManager and attach it to the
         // recycler view
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        mArticlesList.setLayoutManager(layoutManager);
+        mArticlesRv.setLayoutManager(layoutManager);
 
         //Use this setting to improve performance if you know that changes in content do not
         // change the child layout size in the RecyclerView
 
-        mArticlesList.setHasFixedSize(true);
+        mArticlesRv.setHasFixedSize(true);
 
         // Initialize the adapter and attach it
         // to our RecyclerView
         mAdapter = new ArticleAdapter(this, data);
-        mArticlesList.setAdapter(mAdapter);
+        mArticlesRv.setAdapter(mAdapter);
 
         // Store the progress spinner
         // inside this variable.
         mProgressSpinner = (ProgressBar) findViewById(R.id.loading_spinner);
+
+        // Based on the internet connection, either start the loader
+        // or display the empty state view.
+        startLoaderOrEmptyState(LOADER_ID);
 
     }
 
@@ -137,10 +139,35 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onLoadFinished(@NonNull Loader<List<Article>> loader, List<Article> data) {
 
+        mProgressSpinner.setVisibility(View.GONE);
+
+        // Clear the adapter by setting an empty ArrayList
+        mAdapter.setArticleData(null);
+
+        /*
+         If there is a valid list of {@link Article}s, then add them to the adapter's
+         data set. This will trigger the RecyclerView to update, as the notifyDataSetChanged()
+         is called inside the "setArticleData" .*/
+
+        if (data != null && !data.isEmpty()) {
+            mAdapter.setArticleData(data);
+        }
     }
 
     @Override
     public void onLoaderReset(@NonNull Loader<List<Article>> loader) {
+        // Create a new empty Article list for the Adapter
+
+        // Add the click listener later, bitch !
+        mAdapter = new ArticleAdapter(this, new ArrayList<Article>());
+        mArticlesRv.setAdapter(mAdapter);
+
+        // If there's no internet connection display the emptystate view
+        if (!isNetworkConnected()) {
+
+            //emptyStateRl.setVisibility(View.VISIBLE);
+
+        }
 
     }
 
