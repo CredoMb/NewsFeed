@@ -30,7 +30,6 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleA
         // Do something later
         //
     }
-
    // final private ArticleAdapterOnClickHandler mClickHandler;
 
     /**The Constructor */
@@ -75,6 +74,18 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleA
         // define the onclick method here, please
     }
 
+    /**
+     * onCreateViewHolder is called by the RecyclerView to create a ViewHolder.
+     * In this method, we inflate the layout defined for the view holder inside an xml file.
+     * For our case, the viewholder's layout is called "news_list_item.xml"
+     * The Layout is then returned to be placed inside the recycler view.
+     *
+     * @param viewGroup The ViewGroup into which the new View will be added after
+     *                  it is bound to an adapter position.
+     *
+     * @param viewType  The view type of the new View.
+     */
+
     @NonNull
     @Override
     public ArticleAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
@@ -98,6 +109,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleA
      *                               contents of the item at the given position in the data set.
      * @param position               The position of the item within the adapter's data set.
      */
+
     @Override
     public void onBindViewHolder(@NonNull ArticleAdapterViewHolder articleAdapterViewHolder, int position) {
 
@@ -154,10 +166,9 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleA
             // ago CharSequence will contain "30 minutes ago"
             CharSequence ago =
                     DateUtils.getRelativeTimeSpanString(time, now, DateUtils.SECOND_IN_MILLIS);
-            Log.e("The time difference",ago.toString());
             return ago.toString();
 
-            // If the operation above did'nt work, catch and display the exception
+            // If the operation above didn't work, catch and display the exception
         } catch (
                 ParseException e) {
             e.printStackTrace();
@@ -170,7 +181,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleA
      * This method simply returns the number of items to display. It is used behind the scenes
      * to help layout our Views and for animations.
      *
-     * @return The number of items available in our list of movies
+     * @return The number of items available in our list of articles
      */
 
     @Override
@@ -186,7 +197,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleA
      * created one. This is handy when we get new data from the web but don't want to create a
      * new ArticleAdapter to display it.
      *
-     * @param articleData The new movie data to be displayed.
+     * @param articleData The new article data to be displayed.
      */
     public void setArticleData (List<Article> articleData) {
         mArticleData = articleData;

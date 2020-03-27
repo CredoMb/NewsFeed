@@ -13,6 +13,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -65,22 +66,20 @@ public class MainActivity extends AppCompatActivity
         // Inflate the RecyclerView
         mArticlesRv = (RecyclerView) findViewById(R.id.rv_articles);
 
-        ArrayList<Article> data =
-        QueryUtils.extractArticles(QueryUtils.theSampleJson());
-
         // Create a LinearLayoutManager and attach it to the
         // recycler view
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        mArticlesRv.setLayoutManager(layoutManager);
 
         //Use this setting to improve performance if you know that changes in content do not
         // change the child layout size in the RecyclerView
-
         mArticlesRv.setHasFixedSize(true);
+
+        // Set the layout manager onto the Recycler View
+        mArticlesRv.setLayoutManager(layoutManager);
 
         // Initialize the adapter and attach it
         // to our RecyclerView
-        mAdapter = new ArticleAdapter(this, data);
+        mAdapter = new ArticleAdapter(this, new ArrayList<Article>());
         mArticlesRv.setAdapter(mAdapter);
 
         // Store the progress spinner
@@ -90,7 +89,6 @@ public class MainActivity extends AppCompatActivity
         // Based on the internet connection, either start the loader
         // or display the empty state view.
         startLoaderOrEmptyState(LOADER_ID);
-
     }
 
     /**
@@ -108,8 +106,9 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public Loader<List<Article>> onCreateLoader(int id, @Nullable Bundle args) {
+
         // Remove the empty state view
-        emptyStateRl.setVisibility(View.GONE);
+       // emptyStateRl.setVisibility(View.GONE);
 
         // Set the visibility of the spinner.
         mProgressSpinner.setVisibility(View.VISIBLE);
@@ -129,13 +128,17 @@ public class MainActivity extends AppCompatActivity
 
         uriBuilder.appendQueryParameter("q","obama");
         uriBuilder.appendQueryParameter("show-fields", fields_to_show);
+        Log.e("the link",uriBuilder.toString());
         uriBuilder.appendQueryParameter("api_key", API_KEY);
 
         // I should make an empty state with a "no_result found" type of
         // message.
+        // https://content.guardianapis.com/search?q=obama&show-fields=thumbnail,trailText&api-key=81b14e7f-70c6-41f5-8e72-6463e127dac7
         return new ArticleLoader(this,uriBuilder.toString());
+
     }
 
+    //
     @Override
     public void onLoadFinished(@NonNull Loader<List<Article>> loader, List<Article> data) {
 
@@ -156,7 +159,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onLoaderReset(@NonNull Loader<List<Article>> loader) {
-        // Create a new empty Article list for the Adapter
 
         // Add the click listener later, bitch !
         mAdapter = new ArticleAdapter(this, new ArrayList<Article>());

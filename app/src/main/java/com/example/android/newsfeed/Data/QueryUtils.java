@@ -205,6 +205,8 @@ public final class QueryUtils {
             Log.e("QueryUtils", "Problem parsing the Article JSON results", e);
         }
 
+        // Next, loop through the articles to check if it contains the actual elements.
+        // Probably "yes" because the log displays the right thing! Bitch !
         return articles;
     }
 
