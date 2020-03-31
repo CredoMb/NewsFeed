@@ -3,20 +3,25 @@ package com.example.android.newsfeed;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
+import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Loader;
+import android.app.LoaderManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.SearchView;
 
 import com.example.android.newsfeed.Data.ArticleAdapter;
 import com.example.android.newsfeed.Data.ArticleLoader;
@@ -45,6 +50,11 @@ public class MainActivity extends AppCompatActivity
     * RecyclerView
     * */
     private ArticleAdapter mAdapter;
+
+    /*  Will store the topic that will
+    *   be entered by the user inside the
+    *   search bar */
+    private String mArticleTopic;
 
     /* The variable will store the spinner
     *  used to express that the app is
@@ -88,7 +98,10 @@ public class MainActivity extends AppCompatActivity
 
         // Based on the internet connection, either start the loader
         // or display the empty state view.
-        startLoaderOrEmptyState(LOADER_ID);
+       // startLoaderOrEmptyState(LOADER_ID);
+
+        // What if there are no results ?
+        // Create an Empty state for that
     }
 
     /**
@@ -104,6 +117,76 @@ public class MainActivity extends AppCompatActivity
         return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
     }
 
+    /** onCreateOptionsMenu is called by the system to create the menu items. This will
+     *  make the search bar appear on the AppBar.
+     *
+     *  @param menu the menu in which we place the search bar
+     *
+     * */
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu options from the res/menu/menu_main_activity.xml file.
+        // This adds menu items to the app bar.
+        getMenuInflater().inflate(R.menu.menu_main_activity, menu);
+
+        // Find the menuItem that corresponds to the search View
+        // and store it inside the searchItem variable
+        MenuItem searchItem = menu.findItem(R.id.menu_search_view);
+
+        // From the searchItem, which is a menu Item get the searchView
+        // and store it into a variable
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+
+        // Set a custom typeface to the searchView Text.
+        // This will match the font of the text typed by the user
+        // with the font of the texts in the app
+
+        /*// Get the id of the SearchView's textView
+        int id = searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+        // Set a custom Type Face on the searchView's TextView
+        setCustomTypeFace(searchView, id,R.font.avenir_nextltpro_regular);*/
+
+        // Prevent the searchView to take a full screen size when the device is on landscape
+        searchView.setImeOptions(EditorInfo.IME_FLAG_NO_FULLSCREEN);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+
+                // Make the Empty View Invisible
+                /*mEmptyStateView.setVisibility(View.INVISIBLE);*/
+
+                // Display the progress spinner while the user is waiting for results
+                mProgressSpinner.setVisibility(View.VISIBLE);
+
+                // Destroy the previous loader so the system can create a new link
+                getLoaderManager().destroyLoader(LOADER_ID);
+
+                // After the user has submitted his search word,
+                // insert the word inside the mArticleTopic variable
+                mArticleTopic = s;
+
+                // Based on the network connection status, start the loader
+                // or display the empty state view
+                startLoaderOrEmptyState(LOADER_ID);
+
+                /*startLoaderOrEmptyState(R.drawable.empty_state_no_internet,
+                        R.string.no_internet_title,
+                        R.string.no_internet_subtitle);*/
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                // How to wait until the person presses enter ?
+                return true;
+            }
+        });
+        return true;
+    }
+
     @Override
     public Loader<List<Article>> onCreateLoader(int id, @Nullable Bundle args) {
 
@@ -114,7 +197,7 @@ public class MainActivity extends AppCompatActivity
         mProgressSpinner.setVisibility(View.VISIBLE);
 
         // The key can not appear on github as this is a public repo
-        String API_KEY = "";
+        String API_KEY = "81b14e7f-70c6-41f5-8e72-6463e127dac7";
         String fields_to_show = "thumbnail,trailText";
 
         // Make an Uri Builder with the GUARDIAN_REQUEST_URL as the base Uri
@@ -126,19 +209,16 @@ public class MainActivity extends AppCompatActivity
         // In our case, we will need two additional fields: the thumbnail and the trailText
         // api-key : The key will unlock the access to the API.
 
-        uriBuilder.appendQueryParameter("q","obama");
+        uriBuilder.appendQueryParameter("q",mArticleTopic.trim());
         uriBuilder.appendQueryParameter("show-fields", fields_to_show);
-        Log.e("the link",uriBuilder.toString());
-        uriBuilder.appendQueryParameter("api_key", API_KEY);
+        uriBuilder.appendQueryParameter("api-key", API_KEY);
 
-        // I should make an empty state with a "no_result found" type of
-        // message.
-        // https://content.guardianapis.com/search?q=obama&show-fields=thumbnail,trailText&api-key=81b14e7f-70c6-41f5-8e72-6463e127dac7
+        // Return a new AsyncTaskLoader <List<Article>>.
+        // The Loader will use the link we've built Previously
         return new ArticleLoader(this,uriBuilder.toString());
 
     }
 
-    //
     @Override
     public void onLoadFinished(@NonNull Loader<List<Article>> loader, List<Article> data) {
 
@@ -184,7 +264,7 @@ public class MainActivity extends AppCompatActivity
         // display the Empty State
 
         if (isNetworkConnected()) {
-            getSupportLoaderManager().initLoader(loaderId, null, this).forceLoad();
+            getLoaderManager().initLoader(loaderId, null, MainActivity.this).forceLoad();
         } else {
 
             //.setVisibility(View.GONE);
