@@ -33,7 +33,8 @@ public class MainActivity extends AppCompatActivity
 
     /*The base url that will be used to request
      data from the Guardian API*/
-
+        
+        // I want my shit back, please!
     private String  GUARDIAN_REQUEST_URL = "https://content.guardianapis.com/search?";
 
     /* The recycler view will contain
