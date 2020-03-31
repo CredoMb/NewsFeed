@@ -3,7 +3,7 @@ package com.example.android.newsfeed.Data;
 import android.content.Context;
 import android.nfc.Tag;
 
-import android.content.AsyncTaskLoader;
+import androidx.loader.content.AsyncTaskLoader;
 import androidx.loader.content.Loader;
 
 import com.example.android.newsfeed.Article;
