@@ -21,30 +21,32 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;
 
-public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleAdapterViewHolder> {
+public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleAdapterViewHolder>
+{
 
     private List<Article> mArticleData = new ArrayList<Article>();
     private Context mContext;
+    final private ArticleAdapterOnClickHandler mClickHandler;
 
     public interface ArticleAdapterOnClickHandler {
-        // Do something later
-        //
+
+        void OnClick(int position);
     }
-   // final private ArticleAdapterOnClickHandler mClickHandler;
+
 
     /**The Constructor */
 
-    // later, please add a ArticleAdapterOnClickHandler! Thanks!
-    public ArticleAdapter(Context context, List<Article> articleData) {
+    public ArticleAdapter(Context context, List<Article> articleData,ArticleAdapterOnClickHandler clickHandler) {
         mContext = context;
         mArticleData = articleData;
+        mClickHandler = clickHandler;
     }
 
     /** The View Holder Inner Class.
      * This will be used to inflate the layout
      * of the item in the recycler view*/
 
-    public class ArticleAdapterViewHolder extends RecyclerView.ViewHolder {
+    public class ArticleAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         // The following variables represent the views
         // present on the recycler view's item layout.
@@ -67,11 +69,14 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleA
             mTimePublishedTv = view.findViewById(R.id.article_published_time_tv);
             mSharingIconIb = view.findViewById(R.id.sharing_icon);
 
-            // view.setOnClickListener(this)
+            view.setOnClickListener(this);
 
         }
 
-        // define the onclick method here, please
+        @Override
+        public void onClick(View view) {
+            mClickHandler.OnClick(getAdapterPosition());
+        }
     }
 
     /**

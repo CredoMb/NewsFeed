@@ -24,6 +24,7 @@ import android.widget.RelativeLayout;
 import android.widget.SearchView;
 
 import com.example.android.newsfeed.Data.ArticleAdapter;
+import com.example.android.newsfeed.Data.ArticleAdapter.ArticleAdapterOnClickHandler;
 import com.example.android.newsfeed.Data.ArticleLoader;
 import com.example.android.newsfeed.Data.QueryUtils;
 
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity
 
         // Initialize the adapter and attach it
         // to our RecyclerView
-        mAdapter = new ArticleAdapter(this, new ArrayList<Article>());
+        mAdapter = new ArticleAdapter(this, new ArrayList<Article>(),this);
         mArticlesRv.setAdapter(mAdapter);
 
         // Store the progress spinner
@@ -103,6 +104,7 @@ public class MainActivity extends AppCompatActivity
 
         // What if there are no results ?
         // Create an Empty state for that
+
     }
 
     /**
@@ -117,6 +119,8 @@ public class MainActivity extends AppCompatActivity
 
         return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
     }
+
+
 
     /** onCreateOptionsMenu is called by the system to create the menu items. This will
      *  make the search bar appear on the AppBar.
@@ -242,7 +246,7 @@ public class MainActivity extends AppCompatActivity
     public void onLoaderReset(@NonNull Loader<List<Article>> loader) {
 
         // Add the click listener later, bitch !
-        mAdapter = new ArticleAdapter(this, new ArrayList<Article>());
+        mAdapter = new ArticleAdapter(this, new ArrayList<Article>(),this);
         mArticlesRv.setAdapter(mAdapter);
 
         // If there's no internet connection display the emptystate view
