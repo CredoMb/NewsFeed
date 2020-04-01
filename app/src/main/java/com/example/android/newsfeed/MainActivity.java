@@ -15,19 +15,17 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
 
 import com.example.android.newsfeed.Data.ArticleAdapter;
-import com.example.android.newsfeed.Data.ArticleAdapter.ArticleAdapterOnClickHandler;
 import com.example.android.newsfeed.Data.ArticleLoader;
-import com.example.android.newsfeed.Data.QueryUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,6 +101,8 @@ public class MainActivity extends AppCompatActivity
         // Store the progress spinner
         // inside this variable.
         mProgressSpinner = (ProgressBar) findViewById(R.id.loading_spinner);
+
+        // You get every one and they will all behave in a certain manner
 
         // Based on the internet connection, either start the loader
         // or display the empty state view.
@@ -228,7 +228,7 @@ public class MainActivity extends AppCompatActivity
         mProgressSpinner.setVisibility(View.VISIBLE);
 
         // The key can not appear on github as this is a public repo
-        String API_KEY = "81b14e7f-70c6-41f5-8e72-6463e127dac7";
+        String API_KEY = "";
         String fields_to_show = "thumbnail,trailText";
 
         // Make an Uri Builder with the GUARDIAN_REQUEST_URL as the base Uri

@@ -1,5 +1,6 @@
 package com.example.android.newsfeed.Data;
 import android.content.Context;
+import android.content.Intent;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ShareCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android.newsfeed.Article;
@@ -28,6 +30,8 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleA
     private Context mContext;
     final private ArticleAdapterOnClickHandler mClickHandler;
 
+    private final String SHARE_ARTICLE = "article_link_and_title";
+
     public interface ArticleAdapterOnClickHandler {
 
         void OnClick(int position);
@@ -44,7 +48,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleA
 
     /** The View Holder Inner Class.
      * This will be used to inflate the layout
-     * of the item in the recycler view*/
+     * of the item in the recycler view */
 
     public class ArticleAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -69,6 +73,45 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleA
             mTimePublishedTv = view.findViewById(R.id.article_published_time_tv);
             mSharingIconIb = view.findViewById(R.id.sharing_icon);
 
+            // This will handle the sharing process.
+            // Whenever the sharing icon is clicked,
+            // the app will create a sharing intent
+            // with a text made of the title and the link for the
+            // web page.
+            mSharingIconIb.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    String articleTitle = mArticleData.get(getAdapterPosition()).getTitle();
+                    String articleLink = mArticleData.get(getAdapterPosition()).getFullArticleUrl();
+
+                    // The following text will be shared as an intent
+                    String articleSharingText = articleTitle + "\n"
+                            + articleLink;
+
+                    Log.e("the sharing stuff",articleSharingText);
+                    //SHARE_ARTICLE
+                    Intent sendIntent = new Intent();
+                    sendIntent.setAction(Intent.ACTION_SEND);
+                    sendIntent.putExtra(Intent.EXTRA_TEXT, "Yo zoba");
+                    sendIntent.setType("text/plain");
+
+                    // Create an "ACTION_CHOOSER" intent
+                    Intent shareIntent = Intent.createChooser(sendIntent, null);
+                    //shareIntent.star
+                    //view.getContext().startActivity(shareIntent);
+
+                    /* The from method specifies the Context from which this share is coming from */
+                    ShareCompat.IntentBuilder
+                            .from(com.example.android.newsfeed.MainActivity)
+                            .setType("text/plain")
+                            .setChooserTitle("Partager")
+                            .setText("Yo Zoba")
+                            .startChooser();
+
+                    view.getClass();
+                }
+            });
             view.setOnClickListener(this);
 
         }
@@ -135,7 +178,6 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleA
         // Set the time difference between the publication and the current time
         articleAdapterViewHolder.mTimePublishedTv
                 .setText(getTheTimeAgo(currentArticle.getTimePublished(),"GMT"));
-
     }
 
     /**
@@ -224,4 +266,5 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleA
         // that a change of data occured.
         notifyDataSetChanged();
     }
+
 }
