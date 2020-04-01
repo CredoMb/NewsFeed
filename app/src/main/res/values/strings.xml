@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">NewsFeed</string>
+    <!-- Text for the search bar title-->
+    <string name="search_bar">Search Bar</string>
 </resources>
