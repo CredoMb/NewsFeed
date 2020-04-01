@@ -198,6 +198,19 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleA
     }
 
     /**
+     * This method is used to get the list of articles.
+     * This is handy when we need to get certain information about
+     * a specific item in the list.
+     *
+     * Ex: To get the link to the article so we can create a
+     * Web Intent.
+     */
+
+    public List<Article> getArticleData() {
+        return mArticleData;
+    }
+
+    /**
      * This method is used to set the articles on a ArticleAdapter if we've already
      * created one. This is handy when we get new data from the web but don't want to create a
      * new ArticleAdapter to display it.

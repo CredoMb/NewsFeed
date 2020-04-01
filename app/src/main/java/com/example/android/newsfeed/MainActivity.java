@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.Loader;
 import android.app.LoaderManager;
 import android.net.ConnectivityManager;
@@ -32,7 +33,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
-        implements LoaderManager.LoaderCallbacks<List<Article>> {
+        implements LoaderManager.LoaderCallbacks<List<Article>>,
+        ArticleAdapter.ArticleAdapterOnClickHandler{
+
+    /* The Key of the Web Intent Extra*/
+
+    private final String ARTICLE_LINK = "article_link";
 
     /*The Article Loader ID*/
     private static int LOADER_ID = 1;
@@ -120,7 +126,27 @@ public class MainActivity extends AppCompatActivity
         return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
     }
 
+    /**
+     * This method contains the logic
+     * to handle a click on a adapter item.
+     *
+     * @param position represent the position of the item that has been clicked on
+     */
+    @Override
+    public void OnClick(int position) {
 
+        // Extract the link of the clicked item
+        String articleLink =  mAdapter.getArticleData().get(position).getFullArticleUrl();
+
+        // Create the web intent
+        Intent intent = new Intent(Intent.ACTION_VIEW,Uri.parse(articleLink));
+
+        // Check if there's an app available to resolve
+        // the intent, then execute it.
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+    }
 
     /** onCreateOptionsMenu is called by the system to create the menu items. This will
      *  make the search bar appear on the AppBar.
@@ -202,7 +228,7 @@ public class MainActivity extends AppCompatActivity
         mProgressSpinner.setVisibility(View.VISIBLE);
 
         // The key can not appear on github as this is a public repo
-        String API_KEY = "";
+        String API_KEY = "81b14e7f-70c6-41f5-8e72-6463e127dac7";
         String fields_to_show = "thumbnail,trailText";
 
         // Make an Uri Builder with the GUARDIAN_REQUEST_URL as the base Uri
