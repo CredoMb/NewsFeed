@@ -48,13 +48,16 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleA
     }
 
     /** The View Holder Inner Class.
-     * This will be used to inflate the layout
-     * of the item in the recycler view */
+     * This will be used to store the views
+     * of the item's layout inside variables.
+     * */
 
     public class ArticleAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         // The following variables represent the views
         // present on the recycler view's item layout.
+        // They will store each one of the view of the item's layout.
+
         public ImageView  mArticleThumbnailIv;
 
         public TextView mArticleTitleTv;
@@ -63,7 +66,21 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleA
 
         public ImageButton mSharingIconIb;
 
-        // What is this about ?
+        /** The View Holder Constructor .
+         *  Will get each view of the item's layout
+         *  and store it inside the corresponding variable.
+         *
+         *  The views of the item layout are retrieved
+         *  through their Id.
+         *
+         *  Ex: The "article image view" will be stored
+         *  inside "mArticleThumbnailIv"
+         *
+         * @param view will be passed to the constructor by
+         *             "onCreateViewHolder". It represents the
+         *             layout of the list's item.
+         * */
+
         public ArticleAdapterViewHolder(@NonNull View view) {
             super(view);
 
@@ -83,16 +100,21 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleA
                 @Override
                 public void onClick(View view) {
 
+                    // Store the article Title and link inside 2 separated
+                    // variables, one for each of them.
                     String articleTitle = mArticleData.get(getAdapterPosition()).getTitle();
                     String articleLink = mArticleData.get(getAdapterPosition()).getFullArticleUrl();
 
-                    // The following text will be shared as an intent
+                    // Create a String with a concatenation of the
+                    // article's title and link. This will be shared
+                    // though an intent as the article summary.
                     String articleSharingText = articleTitle + "\n"
                             + articleLink;
 
-                    Log.e("the sharing stuff",articleSharingText);
-
-                    /* The from method specifies the Context from which this share is coming from */
+                    /*
+                    * Will help to share the article summary
+                    * as an intent
+                    * */
                     ShareCompat.IntentBuilder
                             .from((Activity)mContext)
                             .setType("text/plain")

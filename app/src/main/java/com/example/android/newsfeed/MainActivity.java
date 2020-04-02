@@ -102,7 +102,8 @@ public class MainActivity extends AppCompatActivity
         // inside this variable.
         mProgressSpinner = (ProgressBar) findViewById(R.id.loading_spinner);
 
-        // You get every one and they will all behave in a certain manner
+        // Find and store the empty state group View
+        emptyStateRl = (RelativeLayout) findViewById(R.id.empty_group_view);
 
         // Based on the internet connection, either start the loader
         // or display the empty state view.
@@ -223,7 +224,7 @@ public class MainActivity extends AppCompatActivity
     public Loader<List<Article>> onCreateLoader(int id, @Nullable Bundle args) {
 
         // Remove the empty state view
-        // emptyStateRl.setVisibility(View.GONE);
+        emptyStateRl.setVisibility(View.GONE);
 
         // Set the visibility of the spinner.
         mProgressSpinner.setVisibility(View.VISIBLE);
@@ -279,7 +280,7 @@ public class MainActivity extends AppCompatActivity
         // If there's no internet connection display the emptystate view
         if (!isNetworkConnected()) {
 
-            //emptyStateRl.setVisibility(View.VISIBLE);
+            emptyStateRl.setVisibility(View.VISIBLE);
 
         }
 

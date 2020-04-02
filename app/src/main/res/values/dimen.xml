@@ -2,4 +2,23 @@
 <resources>
     <!--Spacing used around the recycler inside the MainActivity -->
     <dimen name="recycler_spacing">8dp</dimen>
+
+    <!-- The margin for the bottom of the empty state group view-->
+    <dimen name="empty_state_bottom_margin">80dp</dimen>
+
+    <!-- The padding for the bottom of the empty state title-->
+    <dimen name="empty_state_title_padding">8dp</dimen>
+
+    <!-- The textSize of the empty state title-->
+    <dimen name="empty_state_title_textsize">26sp</dimen>
+
+    <!-- The Top padding of the empty state subtitle-->
+    <dimen name="empty_state_subtitle_padding">4dp</dimen>
+
+    <!-- The textSize of the refresh textView-->
+    <dimen name="refresh_textView_textsize">24sp</dimen>
+
+    <!-- The height of the refresh textView-->
+    <dimen name="refresh_textView_height">92dp</dimen>
+
 </resources>

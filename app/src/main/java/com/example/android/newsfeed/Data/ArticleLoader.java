@@ -1,13 +1,8 @@
 package com.example.android.newsfeed.Data;
 
 import android.content.Context;
-import android.nfc.Tag;
-
 import android.content.AsyncTaskLoader;
-import android.content.Loader;
-
 import com.example.android.newsfeed.Article;
-
 import java.util.List;
 
 public class ArticleLoader extends AsyncTaskLoader<List<Article>>{

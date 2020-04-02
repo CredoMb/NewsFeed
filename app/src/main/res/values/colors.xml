@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#4d5078</color>
+    <color name="colorPrimaryDark">#21254F</color>
+    <color name="colorAccent">#F2CA27</color>
+
+    <!-- colors for the text in the empty state -->
+    <color name="colorEmptyStateTitle">#4d5078</color>
+    <color name="colorEmptyStateText">#4d5078</color>
+    <color name="colorEmptyStateRefresh">#4d5078</color>
+
 </resources>
