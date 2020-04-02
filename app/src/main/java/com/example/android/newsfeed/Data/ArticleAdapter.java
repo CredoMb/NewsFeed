@@ -1,4 +1,5 @@
 package com.example.android.newsfeed.Data;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.text.format.DateUtils;
@@ -90,26 +91,15 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleA
                             + articleLink;
 
                     Log.e("the sharing stuff",articleSharingText);
-                    //SHARE_ARTICLE
-                    Intent sendIntent = new Intent();
-                    sendIntent.setAction(Intent.ACTION_SEND);
-                    sendIntent.putExtra(Intent.EXTRA_TEXT, "Yo zoba");
-                    sendIntent.setType("text/plain");
-
-                    // Create an "ACTION_CHOOSER" intent
-                    Intent shareIntent = Intent.createChooser(sendIntent, null);
-                    //shareIntent.star
-                    //view.getContext().startActivity(shareIntent);
 
                     /* The from method specifies the Context from which this share is coming from */
                     ShareCompat.IntentBuilder
-                            .from(com.example.android.newsfeed.MainActivity)
+                            .from((Activity)mContext)
                             .setType("text/plain")
-                            .setChooserTitle("Partager")
-                            .setText("Yo Zoba")
+                            .setChooserTitle(SHARE_ARTICLE)
+                            .setText(articleSharingText)
                             .startChooser();
 
-                    view.getClass();
                 }
             });
             view.setOnClickListener(this);

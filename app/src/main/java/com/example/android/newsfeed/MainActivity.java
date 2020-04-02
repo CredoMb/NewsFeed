@@ -165,6 +165,7 @@ public class MainActivity extends AppCompatActivity
         // and store it inside the searchItem variable
         MenuItem searchItem = menu.findItem(R.id.menu_search_view);
 
+
         // From the searchItem, which is a menu Item get the searchView
         // and store it into a variable
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
