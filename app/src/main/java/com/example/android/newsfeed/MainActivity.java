@@ -19,10 +19,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import com.example.android.newsfeed.Data.ArticleAdapter;
 import com.example.android.newsfeed.Data.ArticleLoader;
@@ -46,6 +47,19 @@ public class MainActivity extends AppCompatActivity
 
     // I want my shit back, please!
     private String  GUARDIAN_REQUEST_URL = "https://content.guardianapis.com/search?";
+
+    /*Represent the topic to get from the API.
+     * It will be added to the "GUARDIAN_REQUEST_URL",
+     * it's could either be "search" or "news".
+     * "news" is the default value because the application
+     *  will start by displaying the news.
+    * */
+    private String mTopic ;
+
+    /*The following values are the two
+    * possible values that mTopic could have */
+    private static String NEWS_TOPIC = "news";
+    private static String SEARCH_TOPIC = "search";
 
     /* The recycler view will contain
      *  a list of articles. Each article
@@ -72,7 +86,7 @@ public class MainActivity extends AppCompatActivity
      * empty state for a bad internet connection
      */
 
-    private RelativeLayout emptyStateRl;
+    private RelativeLayout mEmptyStateRl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,14 +117,16 @@ public class MainActivity extends AppCompatActivity
         mProgressSpinner = (ProgressBar) findViewById(R.id.loading_spinner);
 
         // Find and store the empty state group View
-        emptyStateRl = (RelativeLayout) findViewById(R.id.empty_group_view);
+        mEmptyStateRl = (RelativeLayout) findViewById(R.id.empty_group_view);
+
+        // Set the default topic to "news"
+        // so that the app will start by displaying
+        // news articles.
+        mTopic = NEWS_TOPIC;
 
         // Based on the internet connection, either start the loader
-        // or display the empty state view.
-        // startLoaderOrEmptyState(LOADER_ID);
-
-        // What if there are no results ?
-        // Create an Empty state for that
+        // or display the "no internet" empty state view.
+        startLoaderOrEmptyState(LOADER_ID);
 
     }
 
@@ -197,8 +213,10 @@ public class MainActivity extends AppCompatActivity
                 getLoaderManager().destroyLoader(LOADER_ID);
 
                 // After the user has submitted his search word,
-                // insert the word inside the mArticleTopic variable
+                // insert the word inside the mArticleTopic variable.
+                // Change the topic to "search".
                 mArticleTopic = s;
+                mTopic = SEARCH_TOPIC;
 
                 // Based on the network connection status, start the loader
                 // or display the empty state view
@@ -224,7 +242,7 @@ public class MainActivity extends AppCompatActivity
     public Loader<List<Article>> onCreateLoader(int id, @Nullable Bundle args) {
 
         // Remove the empty state view
-        emptyStateRl.setVisibility(View.GONE);
+        mEmptyStateRl.setVisibility(View.GONE);
 
         // Set the visibility of the spinner.
         mProgressSpinner.setVisibility(View.VISIBLE);
@@ -234,7 +252,7 @@ public class MainActivity extends AppCompatActivity
         String fields_to_show = "thumbnail,trailText";
 
         // Make an Uri Builder with the GUARDIAN_REQUEST_URL as the base Uri
-        Uri baseUri = Uri.parse(GUARDIAN_REQUEST_URL);
+        Uri baseUri = Uri.parse(GUARDIAN_REQUEST_URL + mTopic);
         Uri.Builder uriBuilder = baseUri.buildUpon();
 
         // Add query parameters to the base Uri.
@@ -242,10 +260,14 @@ public class MainActivity extends AppCompatActivity
         // In our case, we will need two additional fields: the thumbnail and the trailText
         // api-key : The key will unlock the access to the API.
 
-        uriBuilder.appendQueryParameter("q",mArticleTopic.trim());
+        if (mTopic == SEARCH_TOPIC) {
+            uriBuilder.appendQueryParameter("q",mArticleTopic.trim());
+        }
+
         uriBuilder.appendQueryParameter("show-fields", fields_to_show);
         uriBuilder.appendQueryParameter("api-key", API_KEY);
 
+        // Qu'est ce qui se passe lorsqu'il n'y
         // Return a new AsyncTaskLoader <List<Article>>.
         // The Loader will use the link we've built Previously
         return new ArticleLoader(this,uriBuilder.toString());
@@ -268,6 +290,15 @@ public class MainActivity extends AppCompatActivity
         if (data != null && !data.isEmpty()) {
             mAdapter.setArticleData(data);
         }
+        // If there are no data returned,
+        // show the "no result" empty state
+        else {
+                fillEmptyStateView(R.drawable.no_result_image,
+                        R.string.no_result_title,
+                        R.string.no_result_text);
+
+                mEmptyStateRl.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -280,7 +311,7 @@ public class MainActivity extends AppCompatActivity
         // If there's no internet connection display the emptystate view
         if (!isNetworkConnected()) {
 
-            emptyStateRl.setVisibility(View.VISIBLE);
+            mEmptyStateRl.setVisibility(View.VISIBLE);
 
         }
 
@@ -294,14 +325,32 @@ public class MainActivity extends AppCompatActivity
     private void startLoaderOrEmptyState(int loaderId) {
 
         // Check the status of the network, then either launch the Loader or
-        // display the Empty State
+        // display the "No internet" Empty State
 
         if (isNetworkConnected()) {
             getLoaderManager().initLoader(loaderId, null, MainActivity.this).forceLoad();
         } else {
 
-            //.setVisibility(View.GONE);
-            //emptyStateRl.setVisibility(View.VISIBLE);
+            mEmptyStateRl.setVisibility(View.VISIBLE);
         }
+    }
+
+    /**
+     * This method will help to fill the Image View and
+     * the two textViews of the emptyState Group View
+     */
+    private void fillEmptyStateView(int emptyStateImageId, int emptyStateTitleId, int emptyStateSubtitleId) {
+
+        // Set the correct image into the empty state image view
+        ImageView emptyStateImage = (ImageView) mEmptyStateRl.findViewById(R.id.empty_state_image);
+        emptyStateImage.setImageResource(emptyStateImageId);
+
+        // Set the correct text into the empty state title text
+        TextView emptyStateTitleText = (TextView) mEmptyStateRl.findViewById(R.id.empty_state_title);
+        emptyStateTitleText.setText(emptyStateTitleId);
+
+        // Set the correct text into the empty state subtitle text
+        TextView emptyStateSubTitleText = (TextView) mEmptyStateRl.findViewById(R.id.empty_state_subtitle);
+        emptyStateSubTitleText.setText(emptyStateSubtitleId);
     }
 }
