@@ -65,6 +65,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleA
         public TextView mTimePublishedTv;
 
         public ImageButton mSharingIconIb;
+        public View mSeparatorView;
 
         /** The View Holder Constructor .
          *  Will get each view of the item's layout
@@ -124,6 +125,8 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleA
 
                 }
             });
+            mSeparatorView = view.findViewById(R.id.line_separator);
+
             view.setOnClickListener(this);
 
         }

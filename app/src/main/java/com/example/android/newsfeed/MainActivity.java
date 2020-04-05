@@ -88,6 +88,12 @@ public class MainActivity extends AppCompatActivity
 
     private RelativeLayout mEmptyStateRl;
 
+    /* The refresh TextView of the Empty
+    *  State. Once clicked, it will restart
+    *  the loader. */
+
+    private TextView mRefreshTv;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,6 +124,17 @@ public class MainActivity extends AppCompatActivity
 
         // Find and store the empty state group View
         mEmptyStateRl = (RelativeLayout) findViewById(R.id.empty_group_view);
+
+        // The refresh textView from the empty State
+        mRefreshTv = findViewById(R.id.refresh_tv);
+
+        // Will start the loader
+        mRefreshTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startLoaderOrEmptyState(LOADER_ID);
+            }
+        });
 
         // Set the default topic to "news"
         // so that the app will start by displaying
@@ -295,9 +312,12 @@ public class MainActivity extends AppCompatActivity
         else {
                 fillEmptyStateView(R.drawable.no_result_image,
                         R.string.no_result_title,
-                        R.string.no_result_text);
+                        R.string.no_result_text,
+                        R.string.close);
 
                 mEmptyStateRl.setVisibility(View.VISIBLE);
+                // Set back the topic to "news"
+                mTopic = NEWS_TOPIC;
         }
     }
 
@@ -311,8 +331,10 @@ public class MainActivity extends AppCompatActivity
         // If there's no internet connection display the emptystate view
         if (!isNetworkConnected()) {
 
-            mEmptyStateRl.setVisibility(View.VISIBLE);
+            fillEmptyStateView(R.drawable.no_internet_image, R.string.no_result_title,
+                    R.string.no_internet_text, R.string.refresh_text);
 
+            mEmptyStateRl.setVisibility(View.VISIBLE);
         }
 
     }
@@ -331,6 +353,9 @@ public class MainActivity extends AppCompatActivity
             getLoaderManager().initLoader(loaderId, null, MainActivity.this).forceLoad();
         } else {
 
+            fillEmptyStateView(R.drawable.no_internet_image, R.string.no_result_title,
+                    R.string.no_internet_text, R.string.refresh_text);
+
             mEmptyStateRl.setVisibility(View.VISIBLE);
         }
     }
@@ -339,7 +364,8 @@ public class MainActivity extends AppCompatActivity
      * This method will help to fill the Image View and
      * the two textViews of the emptyState Group View
      */
-    private void fillEmptyStateView(int emptyStateImageId, int emptyStateTitleId, int emptyStateSubtitleId) {
+    private void fillEmptyStateView(int emptyStateImageId, int emptyStateTitleId
+            , int emptyStateSubtitleId, int emptyStateActionTextId) {
 
         // Set the correct image into the empty state image view
         ImageView emptyStateImage = (ImageView) mEmptyStateRl.findViewById(R.id.empty_state_image);
@@ -352,5 +378,10 @@ public class MainActivity extends AppCompatActivity
         // Set the correct text into the empty state subtitle text
         TextView emptyStateSubTitleText = (TextView) mEmptyStateRl.findViewById(R.id.empty_state_subtitle);
         emptyStateSubTitleText.setText(emptyStateSubtitleId);
+
+        // Set the text of the textView that represent the possible action
+        // either "refresh" or "close".
+        TextView emptyStateAction = (TextView) mEmptyStateRl.findViewById(R.id.refresh_tv);
+        emptyStateAction.setText(emptyStateActionTextId);
     }
 }

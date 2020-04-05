@@ -1,59 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <RelativeLayout
-        android:id="@+id/article_main_info_Vg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/article_title_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Bla bla"
-            android:textSize="16sp"/>
-
-        <TextView
-            android:id="@+id/article_trailText_tv"
-            android:layout_below="@id/article_title_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Bla bla"
-            android:textSize="12sp"/>
-
-        <TextView
-            android:id="@+id/article_published_time_tv"
-            android:layout_below="@id/article_trailText_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="6 min ago"/>
-
-    </RelativeLayout>
+    android:orientation="vertical"
+    android:paddingStart="16dp"
+    android:paddingTop="16dp"
+    android:paddingEnd="16dp">
 
     <LinearLayout
-        android:orientation="vertical"
-        android:id="@+id/article_extra_info_Vg"
-        android:layout_alignParentEnd="true"
-        android:layout_width="wrap_content"
-        android:layout_height="100dp">
+        android:id="@+id/article_main_info_Vg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/article_image_Iv"
-            android:layout_width="40dp"
-            android:layout_height="40dp" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:orientation="vertical">
 
-        <ImageButton
-            android:id="@+id/sharing_icon"
-            android:src="@drawable/ic_launcher_background"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="@android:color/transparent"/>
+            <TextView
+                android:id="@+id/article_title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="Bla bla ahahajakksdljdlndljnvljnvljfnjvnlfn"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/article_trailText_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/article_title_tv"
+                android:text="Bla bla"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="4dp">
+
+            <ImageView
+                android:id="@+id/article_image_Iv"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"/>
+
+        </FrameLayout>
 
     </LinearLayout>
 
+    <LinearLayout
 
+        android:id="@+id/article_extra_info_Vg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/article_published_time_tv"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="3"
+            android:gravity="center_vertical"
+            android:text="6 min ago"
+            android:textSize="12sp" />
+
+        <ImageButton
+            android:id="@+id/sharing_icon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="@android:color/transparent"
+            android:src="@drawable/outline_share_black_24" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/line_separator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+
+</LinearLayout>
