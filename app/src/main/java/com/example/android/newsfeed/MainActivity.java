@@ -268,6 +268,8 @@ public class MainActivity extends AppCompatActivity
         String API_KEY = "";
         String fields_to_show = "thumbnail,trailText";
 
+        // Le ration pixel - ecran : Je m'en rappelle
+        
         // Make an Uri Builder with the GUARDIAN_REQUEST_URL as the base Uri
         Uri baseUri = Uri.parse(GUARDIAN_REQUEST_URL + mTopic);
         Uri.Builder uriBuilder = baseUri.buildUpon();

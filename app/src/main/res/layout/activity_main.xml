@@ -26,15 +26,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true"
+            />
 
     </RelativeLayout>
 
     <!-- This group View will contain the empty state
          of the application -->
-
     <RelativeLayout
         android:id="@+id/empty_group_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
@@ -44,7 +47,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src = "@drawable/no_internet_image"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop"
+            />
 
         <!-- Group View that contains all the texts of the empty state-->
         <LinearLayout
@@ -52,7 +56,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_above="@id/refresh_tv"
+            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:paddingBottom="@dimen/empty_state_bottom_margin">
 
@@ -82,21 +86,20 @@
                 android:textColor="@color/colorEmptyStateText" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/refresh_tv"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/refresh_textView_height"
-            android:layout_alignParentBottom="true"
-            android:gravity="center"
-            android:text="@string/refresh_text"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/refresh_textView_textsize"
-            android:textStyle="bold"
-            android:fontFamily="roboto"
-            android:background="@color/colorEmptyStateRefresh"
-            />
-
     </RelativeLayout>
 
-
+    <TextView
+        android:id="@+id/refresh_tv"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/refresh_textView_height"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:text="@string/refresh_text"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/refresh_textView_textsize"
+        android:textStyle="bold"
+        android:fontFamily="roboto"
+        android:background="@color/colorEmptyStateRefresh"
+        />
+    </RelativeLayout>
 </FrameLayout>
