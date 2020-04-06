@@ -4,10 +4,27 @@
     <color name="colorPrimaryDark">@android:color/black</color>
     <color name="colorAccent">#F2CA27</color>
 
-    <!--<color name="colorPrimary">#4d5078</color>-->
+    <!--
+        Used on the activity_main.xml layout
+    -->
+
     <!-- colors for the text in the empty state -->
     <color name="colorEmptyStateTitle">@android:color/black</color>
     <color name="colorEmptyStateText">@android:color/black</color>
     <color name="colorEmptyStateRefresh">@android:color/darker_gray</color>
+
+    <!--
+        Used on the news_list_item.xml layout
+    -->
+
+    <!-- Colors used for the texts of the article-->
+    <color name="colorArticleTitle">@android:color/black</color>
+
+    <!-- Colors used for the texts of the article-->
+    <color name="colorRefreshButton">@android:color/black</color>
+
+
+    <!-- color used for the background of the ImageButton that contains the sharing icon-->
+    <color name="colorSharingButton">@android:color/transparent</color>
 
 </resources>

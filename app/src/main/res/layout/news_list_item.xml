@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:paddingTop="16dp"
-    android:background="?android:attr/selectableItemBackground"
-    >
+    android:background="?android:attr/selectableItemBackground">
 
     <ImageView
         android:id="@+id/article_image_Iv"
@@ -29,8 +29,8 @@
                 android:layout_height="wrap_content"
                 android:paddingEnd="16dp"
                 android:layout_marginBottom="8dp"
-                android:text="Bla bla ahahajakksdljdlndljnvljnvljfnjvnlfn"
-                android:textColor="@android:color/black"
+                tools:text="Bla bla ahahajakksdljdlndljnvljnvljfnjvnlfn"
+                android:textColor="@color/colorArticleTitle"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -39,7 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingEnd="16dp"
-                android:text="Bla bla"
+                tools:text="Bla bla"
                 android:textSize="16sp" />
 
     </LinearLayout>
@@ -70,7 +70,7 @@
             android:layout_height="48dp"
             android:layout_weight="1"
             android:layout_gravity="end"
-            android:background="@android:color/transparent"
+            android:background="@color/colorSharingButton"
             android:src="@drawable/outline_share_black_24" />
 
     </LinearLayout>

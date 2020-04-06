@@ -34,17 +34,17 @@
         android:id="@+id/empty_group_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="@dimen/empty_state_bottom_margin"
-        android:paddingStart="56dp"
-        android:paddingEnd="56dp"
+        android:paddingBottom="@dimen/empty_state_bottom_padding"
+        android:paddingStart="@dimen/empty_state_start_padding"
+        android:paddingEnd="@dimen/empty_state_end_padding"
         android:layout_gravity="center_horizontal"
         >
 
         <ImageView
             android:id="@+id/empty_state_image"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_above="@id/text_groupView"
+            android:layout_width="@dimen/empty_state_image_dimension"
+            android:layout_height="@dimen/empty_state_image_dimension"
+            android:layout_above="@id/EmptyStateText_GV"
             android:layout_centerHorizontal="true"
             android:src = "@drawable/outline_wifi_off_black_48"
             android:scaleType="centerCrop"
@@ -52,12 +52,12 @@
 
         <!-- Group View that contains all the texts of the empty state-->
         <LinearLayout
-            android:id="@+id/text_groupView"
+            android:id="@+id/EmptyStateText_GV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingTop="16dp"
-            android:paddingBottom="56dp"
+            android:paddingTop="@dimen/EmptyStateText_GV_top_padding"
+            android:paddingBottom="@dimen/EmptyStateText_GV_bottom_padding"
             android:layout_above="@id/refresh_B"
             android:layout_centerHorizontal="true"
             >
@@ -71,7 +71,7 @@
                 android:textAlignment="center"
                 android:fontFamily="roboto"
                 android:text="@string/no_internet_title"
-                android:textSize="16sp"
+                android:textSize="@dimen/empty_state_title_textsize"
                 android:textStyle="bold"
                 android:textColor="@color/colorEmptyStateTitle"/>
 
@@ -94,7 +94,7 @@
             android:layout_alignParentBottom="true"
             android:gravity="center"
             android:text="@string/refresh_text"
-            android:textColor="@android:color/black"
+            android:textColor="@color/colorRefreshButton"
             android:textSize="@dimen/refresh_textView_textsize"
             android:textStyle="bold"
             android:fontFamily="roboto"
