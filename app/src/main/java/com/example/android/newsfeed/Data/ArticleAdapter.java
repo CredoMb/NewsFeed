@@ -1,4 +1,5 @@
 package com.example.android.newsfeed.Data;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -24,8 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;
 
-public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleAdapterViewHolder>
-{
+public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleAdapterViewHolder> {
 
     private List<Article> mArticleData = new ArrayList<Article>();
     private Context mContext;
@@ -39,18 +39,21 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleA
     }
 
 
-    /**The Constructor */
+    /**
+     * The Constructor
+     */
 
-    public ArticleAdapter(Context context, List<Article> articleData,ArticleAdapterOnClickHandler clickHandler) {
+    public ArticleAdapter(Context context, List<Article> articleData, ArticleAdapterOnClickHandler clickHandler) {
         mContext = context;
         mArticleData = articleData;
         mClickHandler = clickHandler;
     }
 
-    /** The View Holder Inner Class.
+    /**
+     * The View Holder Inner Class.
      * This will be used to store the views
      * of the item's layout inside variables.
-     * */
+     */
 
     public class ArticleAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -58,7 +61,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleA
         // present on the recycler view's item layout.
         // They will store each one of the view of the item's layout.
 
-        public ImageView  mArticleThumbnailIv;
+        public ImageView mArticleThumbnailIv;
 
         public TextView mArticleTitleTv;
         public TextView mArticleTrailTextTv;
@@ -67,20 +70,21 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleA
         public ImageButton mSharingIconIb;
         public View mSeparatorView;
 
-        /** The View Holder Constructor .
-         *  Will get each view of the item's layout
-         *  and store it inside the corresponding variable.
-         *
-         *  The views of the item layout are retrieved
-         *  through their Id.
-         *
-         *  Ex: The "article image view" will be stored
-         *  inside "mArticleThumbnailIv"
+        /**
+         * The View Holder Constructor .
+         * Will get each view of the item's layout
+         * and store it inside the corresponding variable.
+         * <p>
+         * The views of the item layout are retrieved
+         * through their Id.
+         * <p>
+         * Ex: The "article image view" will be stored
+         * inside "mArticleThumbnailIv"
          *
          * @param view will be passed to the constructor by
          *             "onCreateViewHolder". It represents the
          *             layout of the list's item.
-         * */
+         */
 
         public ArticleAdapterViewHolder(@NonNull View view) {
             super(view);
@@ -113,11 +117,11 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleA
                             + articleLink;
 
                     /*
-                    * Will help to share the article summary
-                    * as an intent
-                    * */
+                     * Will help to share the article summary
+                     * as an intent
+                     * */
                     ShareCompat.IntentBuilder
-                            .from((Activity)mContext)
+                            .from((Activity) mContext)
                             .setType("text/plain")
                             .setChooserTitle(SHARE_ARTICLE)
                             .setText(articleSharingText)
@@ -145,7 +149,6 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleA
      *
      * @param viewGroup The ViewGroup into which the new View will be added after
      *                  it is bound to an adapter position.
-     *
      * @param viewType  The view type of the new View.
      */
 
@@ -169,8 +172,8 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleA
      * passed into us.
      *
      * @param articleAdapterViewHolder The ViewHolder which should be updated to represent the
-     *                               contents of the item at the given position in the data set.
-     * @param position               The position of the item within the adapter's data set.
+     *                                 contents of the item at the given position in the data set.
+     * @param position                 The position of the item within the adapter's data set.
      */
 
     @Override
@@ -183,7 +186,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleA
                 R.drawable.placeholder_image,
                 articleAdapterViewHolder.mArticleThumbnailIv);
 
-       // Log.e("the thumbnail link",currentArticle.getThumbnailUrl());
+        // Log.e("the thumbnail link",currentArticle.getThumbnailUrl());
         glideHelper.loadImage();
 
         // Set the title and the trailText of the article
@@ -192,24 +195,23 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleA
 
         // Set the time difference between the publication and the current time
         articleAdapterViewHolder.mTimePublishedTv
-                .setText(getTheTimeAgo(currentArticle.getTimePublished(),"GMT"));
+                .setText(getTheTimeAgo(currentArticle.getTimePublished(), "GMT"));
     }
 
     /**
      * This method is used to get the different between the time
      * an {@link Article} was published and the current time.
-     *
+     * <p>
      * It's will help us to determine how long ago the article
      * has been published. the result will be delivered in the format
      * "X timeUnit Ago". Ex : "5 minutes ago" or "30 seconds ago"
      *
      * @param completeDate represent the publication time
-     * @param timeZone represent the time zone used on the publication time.
-     *
+     * @param timeZone     represent the time zone used on the publication time.
      * @return A String that shows how long ago the article was published
-     * */
+     */
 
-    private String getTheTimeAgo (String completeDate, String timeZone) {
+    private String getTheTimeAgo(String completeDate, String timeZone) {
 
         // pUT THE FORMAT INSIDE OF A STRING RESSOURCE
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -217,14 +219,14 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleA
 
         try {
             // This will convert the "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'" to a time in millisecond.
-            // Which represent the difference, in millisecond, between the current date and the date / / 197
-
+            // Which represent the difference, in millisecond, between the current date and the date
+            // January 1, 1970, 00:00:00 GMT
             long time = sdf.parse(completeDate).getTime();
             long now = System.currentTimeMillis();
 
             // Makes the difference between the publication time and the current time.
             // And format it to get the "time ago" format.
-            // Ex: If an article was published 30 minutes from the current, the
+            // Ex: If an article was published 30 minutes from the current time, the
             // ago CharSequence will contain "30 minutes ago"
             CharSequence ago =
                     DateUtils.getRelativeTimeSpanString(time, now, DateUtils.SECOND_IN_MILLIS);
@@ -258,7 +260,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleA
      * This method is used to get the list of articles.
      * This is handy when we need to get certain information about
      * a specific item in the list.
-     *
+     * <p>
      * Ex: To get the link to the article so we can create a
      * Web Intent.
      */
@@ -274,7 +276,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleA
      *
      * @param articleData The new article data to be displayed.
      */
-    public void setArticleData (List<Article> articleData) {
+    public void setArticleData(List<Article> articleData) {
         mArticleData = articleData;
 
         // This method will notify the recycler view

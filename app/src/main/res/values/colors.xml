@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#4d5078</color>
-    <color name="colorPrimaryDark">#21254F</color>
+    <color name="colorPrimary">@android:color/black</color>
+    <color name="colorPrimaryDark">@android:color/black</color>
     <color name="colorAccent">#F2CA27</color>
 
+    <!--<color name="colorPrimary">#4d5078</color>-->
     <!-- colors for the text in the empty state -->
-    <color name="colorEmptyStateTitle">#4d5078</color>
-    <color name="colorEmptyStateText">#4d5078</color>
-    <color name="colorEmptyStateRefresh">#4d5078</color>
+    <color name="colorEmptyStateTitle">@android:color/black</color>
+    <color name="colorEmptyStateText">@android:color/black</color>
+    <color name="colorEmptyStateRefresh">@android:color/darker_gray</color>
 
 </resources>

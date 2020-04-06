@@ -20,7 +20,9 @@ public class Article {
         mTimePublished = timePublished;
     }
 
-    // Getters of the class
+    // Getters of the class.
+    // They are used inside the Loader
+
     public String getTitle () {return mTitle;}
     public String getTrailText () {return mTrailText;}
     public String getThumbnailUrl () {return mThumbnailUrl;}

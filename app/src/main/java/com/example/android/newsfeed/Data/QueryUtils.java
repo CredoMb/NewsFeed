@@ -25,7 +25,7 @@ import java.util.List;
 public final class QueryUtils {
 
     /**
-     * Variable to store the JSON response for a USGS query
+     * Variable to store the JSON response for a query to the Guardian
      */
     private static String JSON_RESPONSE;
 
@@ -74,16 +74,16 @@ public final class QueryUtils {
         HttpURLConnection urlConnection = null;
         InputStream inputStream = null;
         try {
-            // The internet connection is needed before executing the next line !
+
             urlConnection = (HttpURLConnection) url.openConnection();
 
             urlConnection.setRequestMethod("GET");
             urlConnection.setReadTimeout(10000 /* milliseconds */);
             urlConnection.setConnectTimeout(15000 /* milliseconds */);
-            urlConnection.connect(); // Did the connexion lead to a successful transfert ? That's a good question !
+            urlConnection.connect();
 
             if (urlConnection.getResponseCode() == 200) {
-                inputStream = urlConnection.getInputStream(); // Check if the inputStream has a bad value, like null, right ?
+                inputStream = urlConnection.getInputStream();
                 jsonResponse = readFromStream(inputStream);
             } else {
                 Log.e(LOG_TAG, "Error response code " + urlConnection.getResponseCode());
@@ -91,14 +91,13 @@ public final class QueryUtils {
 
         } catch (IOException e) {
             Log.e(LOG_TAG, "Problem retrieving the Article JSON results.", e);
-            // TODO: Handle the exception
 
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
             }
             if (inputStream != null) {
-                // function must handle java.io.IOException here
+
                 inputStream.close();
             }
         }
@@ -134,7 +133,7 @@ public final class QueryUtils {
     }
 
     /**
-     * Return a list of {@link Article} by Fetching data from the USGS server
+     * Return a list of {@link Article} by Fetching data from the Guardian server
      */
 
     public static ArrayList<Article> fetchArticlesData(String requestUrl) {
@@ -147,10 +146,9 @@ public final class QueryUtils {
         try {
             jsonResponse = makeHttpRequest(url);
         } catch (IOException e) {
-            // TODO Handle the IOException
             Log.e(LOG_TAG, "Problem retrieving the Article JSON results.", e);
         }
-        Log.w(LOG_TAG, "This is the \"fetchArticleData\" method");
+        //Log.w(LOG_TAG, "This is the \"fetchArticleData\" method");
         return extractArticles(jsonResponse);
     }
 
@@ -184,7 +182,8 @@ public final class QueryUtils {
             // Loop through the JSONArticleArray to extract informations about each Article
             for (int i = 0; i < JSONArticleArray.length(); i++) {
 
-                // From the VolumeInfo object, get datas (title,averageRating, ratingsCount & infoLink)
+                // From the Article and the Field object, get datas
+                // (webTitle, trailText, thumbnail, webUrl and webPublicationDate)
                 // to create a new Article inside the Article's ArrayList
                 JSONObject JSONArticleObject = JSONArticleArray.optJSONObject(i);
                 JSONObject JSONArticleFieldObject = JSONArticleObject.optJSONObject("fields");
@@ -194,7 +193,7 @@ public final class QueryUtils {
                         JSONArticleFieldObject.optString("trailText"),
                         JSONArticleFieldObject.optString("thumbnail"),
                         JSONArticleObject.optString("webUrl"),
-                        JSONArticleObject.optString("webPublicationDate"))) ;
+                        JSONArticleObject.optString("webPublicationDate")));
 
             }
 
@@ -205,64 +204,46 @@ public final class QueryUtils {
             Log.e("QueryUtils", "Problem parsing the Article JSON results", e);
         }
 
-        // Next, loop through the articles to check if it contains the actual elements.
-        // Probably "yes" because the log displays the right thing! Bitch !
         return articles;
-    }
-
-    // How to fill out the activity Layout ? Idk !
-    // Filling the activity layout with an adapter + a recycler view, 
-    /**
-     * This function will extract the authors from the JsonArray and return a List of String
-     * that contains all the authors
-     */
-    private static List<String> extractAuthors(JSONArray JSONAuthorsArray) {
-
-        List<String> authors = new ArrayList<String>();
-
-        if (JSONAuthorsArray != null && JSONAuthorsArray.length() > 0) {
-            for (int i = 0; i < JSONAuthorsArray.length(); i++) {
-                authors.add(JSONAuthorsArray.optString(i)); // What to do now ?
-            }
-        }
-        return authors;
     }
 
     /**
      * Returns a String that represent a Json Response from the Gardian API
      */
 
-    public static String theSampleJson() {return "{\n" +
-            "  \"response\": {\n" +
-            "    \"status\": \"ok\",\n" +
-            "    \"userTier\": \"developer\",\n" +
-            "    \"total\": 51794,\n" +
-            "    \"startIndex\": 1,\n" +
-            "    \"pageSize\": 10,\n" +
-            "    \"currentPage\": 1,\n" +
-            "    \"pages\": 5180,\n" +
-            "    \"orderBy\": \"relevance\",\n" +
-            "    \"results\": [\n" +
-            "      {\n" +
-            "        \"id\": \"world/2020/mar/04/donald-trump-obama-administration-coronavirus\",\n" +
-            "        \"type\": \"article\",\n" +
-            "        \"sectionId\": \"world\",\n" +
-            "        \"sectionName\": \"World news\",\n" +
-            "        \"webPublicationDate\": \"2020-03-05T03:05:24Z\",\n" +
-            "        \"webTitle\": \"Trump attempts to blame Obama for coronavirus test kit shortage\",\n" +
-            "        \"webUrl\": \"https://www.theguardian.com/world/2020/mar/04/donald-trump-obama-administration-coronavirus\",\n" +
-            "        \"apiUrl\": \"https://content.guardianapis.com/world/2020/mar/04/donald-trump-obama-administration-coronavirus\",\n" +
-            "        \"fields\": {\n" +
-            "          \"trailText\": \"President vaguely attacks Obama administration ‘decision’ amid slow rollout of testing for virus\",\n" +
-            "          \"thumbnail\": \"https://media.guim.co.uk/d7ef357695bb60ea71e6291bc14b407dd6ab2c8b/0_0_3044_1826/500.jpg\"\n" +
-            "        },\n" +
-            "        \"isHosted\": false,\n" +
-            "        \"pillarId\": \"pillar/news\",\n" +
-            "        \"pillarName\": \"News\"\n" +
-            "      \n" +
-            "     }]  \n" +
-            "\n" +
-            "  } \n" +
-            "}";}
+    public static String theSampleJson() {
+        return "{\n" +
+                "  \"response\": {\n" +
+                "    \"status\": \"ok\",\n" +
+                "    \"userTier\": \"developer\",\n" +
+                "    \"total\": 51794,\n" +
+                "    \"startIndex\": 1,\n" +
+                "    \"pageSize\": 10,\n" +
+                "    \"currentPage\": 1,\n" +
+                "    \"pages\": 5180,\n" +
+                "    \"orderBy\": \"relevance\",\n" +
+                "    \"results\": [\n" +
+                "      {\n" +
+                "        \"id\": \"world/2020/mar/04/donald-trump-obama-administration-coronavirus\",\n" +
+                "        \"type\": \"article\",\n" +
+                "        \"sectionId\": \"world\",\n" +
+                "        \"sectionName\": \"World news\",\n" +
+                "        \"webPublicationDate\": \"2020-03-05T03:05:24Z\",\n" +
+                "        \"webTitle\": \"Trump attempts to blame Obama for coronavirus test kit shortage\",\n" +
+                "        \"webUrl\": \"https://www.theguardian.com/world/2020/mar/04/donald-trump-obama-administration-coronavirus\",\n" +
+                "        \"apiUrl\": \"https://content.guardianapis.com/world/2020/mar/04/donald-trump-obama-administration-coronavirus\",\n" +
+                "        \"fields\": {\n" +
+                "          \"trailText\": \"President vaguely attacks Obama administration ‘decision’ amid slow rollout of testing for virus\",\n" +
+                "          \"thumbnail\": \"https://media.guim.co.uk/d7ef357695bb60ea71e6291bc14b407dd6ab2c8b/0_0_3044_1826/500.jpg\"\n" +
+                "        },\n" +
+                "        \"isHosted\": false,\n" +
+                "        \"pillarId\": \"pillar/news\",\n" +
+                "        \"pillarName\": \"News\"\n" +
+                "      \n" +
+                "     }]  \n" +
+                "\n" +
+                "  } \n" +
+                "}";
+    }
 
 }

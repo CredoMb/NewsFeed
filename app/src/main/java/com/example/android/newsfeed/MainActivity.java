@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -33,11 +34,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<List<Article>>,
-        ArticleAdapter.ArticleAdapterOnClickHandler{
-
-    /* The Key of the Web Intent Extra*/
-
-    private final String ARTICLE_LINK = "article_link";
+        ArticleAdapter.ArticleAdapterOnClickHandler {
 
     /*The Article Loader ID*/
     private static int LOADER_ID = 1;
@@ -46,18 +43,21 @@ public class MainActivity extends AppCompatActivity
      data from the Guardian API*/
 
     // I want my shit back, please!
-    private String  GUARDIAN_REQUEST_URL = "https://content.guardianapis.com/search?";
+    private String GUARDIAN_REQUEST_URL = "https://content.guardianapis.com/search?";
 
     /*Represent the topic to get from the API.
      * It will be added to the "GUARDIAN_REQUEST_URL",
      * it's could either be "search" or "news".
      * "news" is the default value because the application
      *  will start by displaying the news.
-    * */
-    private String mTopic ;
+     * */
+    private String mTopic;
 
     /*The following values are the two
-    * possible values that mTopic could have */
+     * possible values that mTopic could have.
+     * - "news" means that the loader will retrieve the news
+     * - "search" means that the loader will retrieve articles related
+     * to a specific topic */
     private static String NEWS_TOPIC = "news";
     private static String SEARCH_TOPIC = "search";
 
@@ -71,8 +71,8 @@ public class MainActivity extends AppCompatActivity
      * */
     private ArticleAdapter mAdapter;
 
-    /*  Will store the topic that will
-     *   be entered by the user inside the
+    /*  Will store the topic
+     *   entered by the user inside the
      *   search bar */
     private String mArticleTopic;
 
@@ -88,25 +88,25 @@ public class MainActivity extends AppCompatActivity
 
     private RelativeLayout mEmptyStateRl;
 
-    /* The refresh TextView of the Empty
-    *  State. Once clicked, it will restart
-    *  the loader. */
+    /* The refresh Button of the Empty
+     *  State. Once clicked, it will restart
+     *  the loader. */
 
-    private TextView mRefreshTv;
+    private Button mRefreshB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Inflate the RecyclerView
+        // Store the RecyclerView in a variable
         mArticlesRv = (RecyclerView) findViewById(R.id.rv_articles);
 
         // Create a LinearLayoutManager and attach it to the
         // recycler view
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 
-        //Use this setting to improve performance if you know that changes in content do not
+        // This setting indicate that changes in content do not
         // change the child layout size in the RecyclerView
         mArticlesRv.setHasFixedSize(true);
 
@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity
 
         // Initialize the adapter and attach it
         // to our RecyclerView
-        mAdapter = new ArticleAdapter(this, new ArrayList<Article>(),this);
+        mAdapter = new ArticleAdapter(this, new ArrayList<Article>(), this);
         mArticlesRv.setAdapter(mAdapter);
 
         // Store the progress spinner
@@ -126,12 +126,16 @@ public class MainActivity extends AppCompatActivity
         mEmptyStateRl = (RelativeLayout) findViewById(R.id.empty_group_view);
 
         // The refresh textView from the empty State
-        mRefreshTv = findViewById(R.id.refresh_tv);
+        mRefreshB = findViewById(R.id.refresh_B);
 
         // Will start the loader
-        mRefreshTv.setOnClickListener(new View.OnClickListener() {
+        mRefreshB.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
+                // Destroy the previous loader
+                getLoaderManager().destroyLoader(LOADER_ID);
+                //Start a new loader
                 startLoaderOrEmptyState(LOADER_ID);
             }
         });
@@ -170,10 +174,10 @@ public class MainActivity extends AppCompatActivity
     public void OnClick(int position) {
 
         // Extract the link of the clicked item
-        String articleLink =  mAdapter.getArticleData().get(position).getFullArticleUrl();
+        String articleLink = mAdapter.getArticleData().get(position).getFullArticleUrl();
 
         // Create the web intent
-        Intent intent = new Intent(Intent.ACTION_VIEW,Uri.parse(articleLink));
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(articleLink));
 
         // Check if there's an app available to resolve
         // the intent, then execute it.
@@ -182,12 +186,12 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    /** onCreateOptionsMenu is called by the system to create the menu items. This will
-     *  make the search bar appear on the AppBar.
+    /**
+     * onCreateOptionsMenu is called by the system to create the menu items. This will
+     * make the search bar appear on the AppBar.
      *
-     *  @param menu the menu in which we place the search bar
-     *
-     * */
+     * @param menu the menu in which we place the search bar
+     */
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -204,24 +208,12 @@ public class MainActivity extends AppCompatActivity
         // and store it into a variable
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
 
-        // Set a custom typeface to the searchView Text.
-        // This will match the font of the text typed by the user
-        // with the font of the texts in the app
-
-        /*// Get the id of the SearchView's textView
-        int id = searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
-        // Set a custom Type Face on the searchView's TextView
-        setCustomTypeFace(searchView, id,R.font.avenir_nextltpro_regular);*/
-
         // Prevent the searchView to take a full screen size when the device is on landscape
         searchView.setImeOptions(EditorInfo.IME_FLAG_NO_FULLSCREEN);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-
-                // Make the Empty View Invisible
-                /*mEmptyStateView.setVisibility(View.INVISIBLE);*/
 
                 // Display the progress spinner while the user is waiting for results
                 mProgressSpinner.setVisibility(View.VISIBLE);
@@ -239,16 +231,11 @@ public class MainActivity extends AppCompatActivity
                 // or display the empty state view
                 startLoaderOrEmptyState(LOADER_ID);
 
-                /*startLoaderOrEmptyState(R.drawable.empty_state_no_internet,
-                        R.string.no_internet_title,
-                        R.string.no_internet_subtitle);*/
-
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String s) {
-                // How to wait until the person presses enter ?
                 return true;
             }
         });
@@ -268,8 +255,6 @@ public class MainActivity extends AppCompatActivity
         String API_KEY = "";
         String fields_to_show = "thumbnail,trailText";
 
-        // Le ration pixel - ecran : Je m'en rappelle
-        
         // Make an Uri Builder with the GUARDIAN_REQUEST_URL as the base Uri
         Uri baseUri = Uri.parse(GUARDIAN_REQUEST_URL + mTopic);
         Uri.Builder uriBuilder = baseUri.buildUpon();
@@ -279,17 +264,21 @@ public class MainActivity extends AppCompatActivity
         // In our case, we will need two additional fields: the thumbnail and the trailText
         // api-key : The key will unlock the access to the API.
 
+        // If the user want to perform as search,
+        // then add the search topic to the link.
+        // The value of "mTopic" determines weither or
+        // the user want to perform a specific search or simply load the
+        // news.
         if (mTopic == SEARCH_TOPIC) {
-            uriBuilder.appendQueryParameter("q",mArticleTopic.trim());
+            uriBuilder.appendQueryParameter("q", mArticleTopic.trim());
         }
 
         uriBuilder.appendQueryParameter("show-fields", fields_to_show);
         uriBuilder.appendQueryParameter("api-key", API_KEY);
 
-        // Qu'est ce qui se passe lorsqu'il n'y
         // Return a new AsyncTaskLoader <List<Article>>.
         // The Loader will use the link we've built Previously
-        return new ArticleLoader(this,uriBuilder.toString());
+        return new ArticleLoader(this, uriBuilder.toString());
 
     }
 
@@ -312,39 +301,41 @@ public class MainActivity extends AppCompatActivity
         // If there are no data returned,
         // show the "no result" empty state
         else {
-                fillEmptyStateView(R.drawable.no_result_image,
-                        R.string.no_result_title,
-                        R.string.no_result_text,
-                        R.string.close);
+            fillEmptyStateView(R.drawable.outline_search_black_48,
+                    R.string.no_result_title,
+                    R.string.no_result_text,
+                    R.string.close);
 
-                mEmptyStateRl.setVisibility(View.VISIBLE);
-                // Set back the topic to "news"
-                mTopic = NEWS_TOPIC;
+            mEmptyStateRl.setVisibility(View.VISIBLE);
+            // Set back the topic to "news"
+            // for when the loader will be restarted
+            mTopic = NEWS_TOPIC;
+
         }
     }
 
     @Override
     public void onLoaderReset(@NonNull Loader<List<Article>> loader) {
 
-        // Add the click listener later, bitch !
-        mAdapter = new ArticleAdapter(this, new ArrayList<Article>(),this);
+        mAdapter = new ArticleAdapter(this, new ArrayList<Article>(), this);
         mArticlesRv.setAdapter(mAdapter);
 
         // If there's no internet connection display the emptystate view
         if (!isNetworkConnected()) {
 
-            fillEmptyStateView(R.drawable.no_internet_image, R.string.no_result_title,
+            fillEmptyStateView(R.drawable.outline_wifi_off_black_48, R.string.no_internet_title,
                     R.string.no_internet_text, R.string.refresh_text);
 
             mEmptyStateRl.setVisibility(View.VISIBLE);
+            mProgressSpinner.setVisibility(View.GONE);
         }
-
     }
 
-    /** Execute certain task based on the internet connection status.
+    /**
+     * Execute certain task based on the internet connection status.
      * If the connection is on, initiate the loader
      * other wise, display the empty state view
-     * */
+     */
 
     private void startLoaderOrEmptyState(int loaderId) {
 
@@ -355,10 +346,11 @@ public class MainActivity extends AppCompatActivity
             getLoaderManager().initLoader(loaderId, null, MainActivity.this).forceLoad();
         } else {
 
-            fillEmptyStateView(R.drawable.no_internet_image, R.string.no_result_title,
+            fillEmptyStateView(R.drawable.outline_wifi_off_black_48, R.string.no_internet_title,
                     R.string.no_internet_text, R.string.refresh_text);
 
             mEmptyStateRl.setVisibility(View.VISIBLE);
+            mProgressSpinner.setVisibility(View.GONE);
         }
     }
 
@@ -383,7 +375,7 @@ public class MainActivity extends AppCompatActivity
 
         // Set the text of the textView that represent the possible action
         // either "refresh" or "close".
-        TextView emptyStateAction = (TextView) mEmptyStateRl.findViewById(R.id.refresh_tv);
+        Button emptyStateAction = (Button) mEmptyStateRl.findViewById(R.id.refresh_B);
         emptyStateAction.setText(emptyStateActionTextId);
     }
 }

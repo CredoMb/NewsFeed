@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.module.AppGlideModule;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 
 public class GlideHelperClass extends AppGlideModule {
 
@@ -17,24 +18,22 @@ public class GlideHelperClass extends AppGlideModule {
     private int mPlaceHolderId;
     private ImageView mTargetIv;
 
-    private RequestBuilder<Drawable> mErrorImageId;
-
     public GlideHelperClass(Context c, String imageLink, int placeHolderId,
-                            ImageView targetIv/*,
-                            RequestBuilder<android.graphics.drawable.Drawable> errorId*/) {
+                            ImageView targetIv) {
+
         mContext = c;
         mImageLink = imageLink;
         mPlaceHolderId = placeHolderId;
         mTargetIv = targetIv;
         // mErrorImageId = errorId;
-        // What do we do in case of an error ?
     }
     public void loadImage() {
 
             Glide.with(mContext)
-                    .load(mImageLink)
+                    .load(mImageLink).apply(RequestOptions.centerCropTransform())
                     .apply(new RequestOptions().placeholder(mPlaceHolderId))
-                    .into(mTargetIv);
+                    .into(mTargetIv)
+                    ;
             //.error(mErrorImageId)
 
     }

@@ -16,9 +16,7 @@
     <dimen name="empty_state_subtitle_padding">4dp</dimen>
 
     <!-- The textSize of the refresh textView-->
-    <dimen name="refresh_textView_textsize">24sp</dimen>
+    <dimen name="refresh_textView_textsize">12sp</dimen>
 
-    <!-- The height of the refresh textView-->
-    <dimen name="refresh_textView_height">92dp</dimen>
 
 </resources>

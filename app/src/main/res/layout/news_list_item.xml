@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:paddingTop="16dp"
+    android:background="?android:attr/selectableItemBackground"
     >
 
     <ImageView
@@ -17,9 +18,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingStart="16dp"
-        android:paddingTop="24dp"
-        android:paddingEnd="16dp"
+        android:paddingStart="24dp"
+        android:paddingTop="16dp"
+        android:paddingEnd="24dp"
         >
 
             <TextView
@@ -43,12 +44,14 @@
 
     </LinearLayout>
 
+    <!-- Time infos and sharing button-->
     <LinearLayout
 
         android:id="@+id/article_extra_info_Vg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="16dp"
+        android:paddingTop="8dp"
+        android:paddingStart="24dp"
         android:paddingEnd="16dp"
         android:orientation="horizontal">
 
@@ -74,8 +77,6 @@
 
     <View
         android:id="@+id/line_separator"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"/>
+        style="@style/Divider"/>
 
 </LinearLayout>
