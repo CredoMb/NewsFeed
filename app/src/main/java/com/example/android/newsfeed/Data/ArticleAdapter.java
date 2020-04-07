@@ -31,7 +31,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleA
     private Context mContext;
     final private ArticleAdapterOnClickHandler mClickHandler;
 
-    private final String SHARE_ARTICLE = "article_link_and_title";
+    private final String SHARE_ARTICLE = "Share Article";
 
     public interface ArticleAdapterOnClickHandler {
 
