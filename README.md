@@ -3,7 +3,11 @@
 # NewsFeed
 This App displays a list of articles related to a specific topic.
 The UI will be populated with articles based on the key word entered by the user.
-When opened for the first time, the UI displays news articles by default.
+When opened for the first time, the UI displays news articles.
+
+The UI responds to clicks by sending the user to the webpage of the article. 
+By clicking on the share Icon of an article, a share Intent is created with the title and the web link of the article.  
+
 The data are queried from the Guardian API.
 
 ## Prerequisites 
