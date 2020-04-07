@@ -70,7 +70,7 @@
             android:layout_height="48dp"
             android:layout_weight="1"
             android:layout_gravity="end"
-            android:background="@color/colorSharingButton"
+            android:background="?android:attr/selectableItemBackground"
             android:src="@drawable/outline_share_black_24" />
 
     </LinearLayout>

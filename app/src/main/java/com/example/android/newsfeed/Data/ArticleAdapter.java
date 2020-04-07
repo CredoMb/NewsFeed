@@ -193,6 +193,9 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleA
         articleAdapterViewHolder.mArticleTitleTv.setText(currentArticle.getTitle());
         articleAdapterViewHolder.mArticleTrailTextTv.setText(currentArticle.getTrailText());
 
+        Log.e("the textView color",
+                String.valueOf(articleAdapterViewHolder.mArticleTrailTextTv.getTextColors()));
+
         // Set the time difference between the publication and the current time
         articleAdapterViewHolder.mTimePublishedTv
                 .setText(getTheTimeAgo(currentArticle.getTimePublished(), "GMT"));

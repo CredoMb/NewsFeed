@@ -94,7 +94,7 @@
             android:layout_alignParentBottom="true"
             android:gravity="center"
             android:text="@string/refresh_text"
-            android:textColor="@color/colorRefreshButton"
+            android:textColor="@color/colorRefreshButtonText"
             android:textSize="@dimen/refresh_textView_textsize"
             android:textStyle="bold"
             android:fontFamily="roboto"
