@@ -1,3 +1,5 @@
+![NewsFeed_UI](https://user-images.githubusercontent.com/48886200/78721389-75638b00-78f5-11ea-8c51-c5814e6f8643.png)
+
 # NewsFeed
 This App displays a list of articles related to a specific topic.
 The UI will be populated with articles based on the key word entered by the user.
