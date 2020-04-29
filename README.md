@@ -18,5 +18,5 @@ The data are queried from the Guardian API.
 ## Contributors
 
 The mockup used to draw the application's layout was inspired by the NewYork Times' mobile app. 
-Exept for the mockup, the owner of this github profile is the only contributor to this app. 
+Exept that, the owner of this github profile is the only contributor to this app. 
 New Ideas and innovative concepts are welcomed :)
