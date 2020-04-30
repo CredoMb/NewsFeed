@@ -188,13 +188,16 @@ public final class QueryUtils {
                 JSONObject JSONArticleObject = JSONArticleArray.optJSONObject(i);
                 JSONObject JSONArticleFieldObject = JSONArticleObject.optJSONObject("fields");
 
+                // This will remove all the html tags found in the Trail Text.
+                String cleanTrailText = JSONArticleFieldObject.optString("trailText")
+                        .replaceAll("<\\S+>","");
+
                 // Add a new article on the article list
                 articles.add(new Article(JSONArticleObject.optString("webTitle"),
-                        JSONArticleFieldObject.optString("trailText"),
+                        cleanTrailText,
                         JSONArticleFieldObject.optString("thumbnail"),
                         JSONArticleObject.optString("webUrl"),
                         JSONArticleObject.optString("webPublicationDate")));
-
             }
 
         } catch (JSONException e) {
