@@ -124,6 +124,9 @@ public class MainActivity extends AppCompatActivity
 
         // Find and store the empty state group View
         mEmptyStateRl = (RelativeLayout) findViewById(R.id.empty_group_view);
+        // Make sure the empty state doesn't appear on the screen
+        // as long as the content of the UI is still full
+        mEmptyStateRl.setVisibility(View.INVISIBLE);
 
         // The refresh textView from the empty State
         mRefreshB = findViewById(R.id.refresh_B);
@@ -252,7 +255,7 @@ public class MainActivity extends AppCompatActivity
         mProgressSpinner.setVisibility(View.VISIBLE);
 
         // The key can not appear on github as this is a public repo
-        String API_KEY = "";
+        String API_KEY = "81b14e7f-70c6-41f5-8e72-6463e127dac7";
         String fields_to_show = "thumbnail,trailText";
 
         // Make an Uri Builder with the GUARDIAN_REQUEST_URL as the base Uri
