@@ -294,6 +294,12 @@ public class MainActivity extends AppCompatActivity
 
         if (item.getItemId() == R.id.action_news_articles) {
 
+            // Display the progress spinner while the user is waiting for results
+            mProgressSpinner.setVisibility(View.VISIBLE);
+
+            // Destroy the previous loader so the system can create a new link
+            getLoaderManager().destroyLoader(LOADER_ID);
+
             // Change the topic of the Query.
             // This will be used to build the Query Url
             // inside of the Loader.
