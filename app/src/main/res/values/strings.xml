@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">NewsFeed</string>
-    <!-- Text for the search bar title-->
+    <!-- Text for the Menu Items-->
     <string name="search_bar">Search Bar</string>
+    <string name="news_articles_menu_item">News articles</string>
 
     <!-- Text for the "no internet" Empty State -->
 

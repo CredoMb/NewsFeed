@@ -7,7 +7,13 @@
         android:icon="@drawable/baseline_search_white_24"
         android:imeOptions="actionSearch|flagNoExtractUi|flagNoFullscreen"
         android:title="@string/search_bar"
+        android:orderInCategory="1"
         app:actionViewClass="android.widget.SearchView"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/action_news_articles"
+        android:title="@string/news_articles_menu_item"
+        android:orderInCategory="2"
+        app:showAsAction="never" />
 </menu>
