@@ -290,6 +290,23 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        if (item.getItemId() == R.id.action_news_articles) {
+
+            // Change the topic of the Query.
+            // This will be used to build the Query Url
+            // inside of the Loader.
+            mTopic = NEWS_TOPIC;
+
+            // Based on the network connection status, start the loader
+            // or display the empty state view
+            startLoaderOrEmptyState(LOADER_ID);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public Loader<List<Article>> onCreateLoader(int id, @Nullable Bundle args) {
 
         // Remove the empty state view
