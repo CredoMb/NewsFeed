@@ -11,7 +11,7 @@ public class Article implements Parcelable {
     private String mFullArticleUrl;
     private String mTimePublished;
 
-    // The class' constructor
+    /** The class' constructor */
     public Article (String title, String trailText,
                     String thumbnail, String fullArticleUrl,
                     String timePublished) {

@@ -43,8 +43,12 @@ public class MainActivity extends AppCompatActivity
     /*The base url that will be used to request
      data from the Guardian API*/
 
-    // I want my shit back, please!
+    // Tha base URL to be used to query the Guardian API
     private String GUARDIAN_REQUEST_URL = "https://content.guardianapis.com/search?";
+
+    // The key to use when saving the current
+    // article list into a bundle
+    private final String ARTICLE_LIST = "article_list";
 
     /*Represent the topic to get from the API.
      * It will be added to the "GUARDIAN_REQUEST_URL",
@@ -58,7 +62,7 @@ public class MainActivity extends AppCompatActivity
      * possible values that mTopic could have.
      * - "news" means that the loader will retrieve the news
      * - "search" means that the loader will retrieve articles related
-     * to a specific topic */
+     * to a specific topic entered by the user.*/
     private static String NEWS_TOPIC = "news";
     private static String SEARCH_TOPIC = "search";
 
@@ -100,6 +104,21 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Initialize the Adapter
+        // with an empty list of Article
+        mAdapter = new ArticleAdapter(this, new ArrayList<Article>(), this);
+
+        // Verify if the movie list was saved as a bundle,
+        // retrieve the data and set it into the Adapter.
+        if (savedInstanceState != null) {
+
+            if (savedInstanceState.containsKey(ARTICLE_LIST)) {
+
+                ArrayList<Article> articleData = savedInstanceState.getParcelableArrayList(ARTICLE_LIST);
+                mAdapter.setArticleData(articleData) ;
+            }
+        }
+
         // Store the RecyclerView in a variable
         mArticlesRv = (RecyclerView) findViewById(R.id.rv_articles);
 
@@ -114,9 +133,7 @@ public class MainActivity extends AppCompatActivity
         // Set the layout manager onto the Recycler View
         mArticlesRv.setLayoutManager(layoutManager);
 
-        // Initialize the adapter and attach it
-        // to our RecyclerView
-        mAdapter = new ArticleAdapter(this, new ArrayList<Article>(), this);
+        // Attach the adapter to the RecyclerView
         mArticlesRv.setAdapter(mAdapter);
 
         // Store the progress spinner
@@ -149,9 +166,35 @@ public class MainActivity extends AppCompatActivity
         // news articles.
         mTopic = NEWS_TOPIC;
 
-        // Based on the internet connection, either start the loader
-        // or display the "no internet" empty state view.
-        startLoaderOrEmptyState(LOADER_ID);
+        // Start the Loader only if the adapter's
+        // list is empty.
+        if(mAdapter.getArticleData().isEmpty()) {
+            // Based on the internet connection, either start the loader
+            // or display the "no internet" empty state view.
+            startLoaderOrEmptyState(LOADER_ID);
+        }
+        else {
+            // Remove Progress Spinner
+            // from the screen.
+            mProgressSpinner.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    /**
+     * onSaveInstanceState will be called right after
+     * the "onStop()" method of the life cycle.
+     * Before stopping the activity, the app will
+     * store the article data so it can be retrieve
+     * after a configuration change. This will avoid making
+     * multiple API queries every time a config change (ex: device rotation) occurs.
+     *
+     * @param outState will store the list as a parcelable element*/
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+
+        outState.putParcelableArrayList(ARTICLE_LIST,(ArrayList<Article>) mAdapter.getArticleData());
+        super.onSaveInstanceState(outState);
 
     }
 
