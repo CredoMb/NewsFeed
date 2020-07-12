@@ -359,7 +359,7 @@ public class MainActivity extends AppCompatActivity
 
         // Clear the adapter by setting an empty ArrayList.
         // Do we need to clear the adapter ? I don't know...
-        mAdapter.setArticleData(null);
+        mAdapter.setArticleData(new ArrayList<Article>());
 
         /*
 

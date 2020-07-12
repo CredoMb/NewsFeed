@@ -161,7 +161,7 @@ public final class QueryUtils {
 
         // If the JSON string is empty or null, then return null.
         if (TextUtils.isEmpty(jsonResponse)) {
-            return null;
+            return new ArrayList<Article>(); //null;
         }
 
         // Create an empty ArrayList that we can start adding Articles to

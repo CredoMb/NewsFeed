@@ -280,12 +280,8 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleA
         mArticleData = articleData;
 
         // This method will notify the recycler view
-        // that a change of data occured, only if the new
-        // list is not null.
-        if (!articleData.isEmpty()) {
+        // that a change of data occured.
             notifyDataSetChanged();
-        }
-
     }
 
 }
