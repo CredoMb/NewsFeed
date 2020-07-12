@@ -35,6 +35,4 @@
     <!-- The textSize of the refresh textView-->
     <dimen name="refresh_textView_textsize">12sp</dimen>
 
-
-
 </resources>

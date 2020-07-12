@@ -357,13 +357,17 @@ public class MainActivity extends AppCompatActivity
 
         mProgressSpinner.setVisibility(View.GONE);
 
-        // Clear the adapter by setting an empty ArrayList
+        // Clear the adapter by setting an empty ArrayList.
+        // Do we need to clear the adapter ? I don't know...
         mAdapter.setArticleData(null);
 
         /*
+
          If there is a valid list of {@link Article}s, then add them to the adapter's
          data set. This will trigger the RecyclerView to update, as the notifyDataSetChanged()
-         is called inside the "setArticleData" .*/
+         is called inside the "setArticleData".
+
+         */
 
         if (data != null && !data.isEmpty()) {
             mAdapter.setArticleData(data);

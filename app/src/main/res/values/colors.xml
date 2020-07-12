@@ -24,7 +24,6 @@
     <!-- Colors used for the texts of the article-->
     <color name="colorRefreshButtonText">@android:color/black</color>
 
-
     <!-- color used for the background of the ImageButton that contains the sharing icon-->
     <color name="colorSharingButton">@android:color/transparent</color>
 

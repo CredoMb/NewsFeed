@@ -30,14 +30,11 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleA
     private List<Article> mArticleData = new ArrayList<Article>();
     private Context mContext;
     final private ArticleAdapterOnClickHandler mClickHandler;
-
     private final String SHARE_ARTICLE = "Share Article";
 
     public interface ArticleAdapterOnClickHandler {
-
         void OnClick(int position);
     }
-
 
     /**
      * The Constructor
@@ -283,8 +280,12 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleA
         mArticleData = articleData;
 
         // This method will notify the recycler view
-        // that a change of data occured.
-        notifyDataSetChanged();
+        // that a change of data occured, only if the new
+        // list is not null.
+        if (!articleData.isEmpty()) {
+            notifyDataSetChanged();
+        }
+
     }
 
 }
